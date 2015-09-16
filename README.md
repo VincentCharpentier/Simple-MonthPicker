@@ -54,7 +54,10 @@ $("#boundMonthPicker").Monthpicker("option", {
 
   - `monthLabels` : STRING ARRAY - Labels for months in the selection tool
   
-    **Default** : `["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jui", "Aug", "Sep", "Oct", "Nov", "Dec"]`
+    **Default** : 
+	```js
+	["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jui", "Aug", "Sep", "Oct", "Nov", "Dec"]
+	```
     
     
 ## Events
