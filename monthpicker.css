@@ -1,18 +1,20 @@
+﻿
 .monthpicker {
-	display: inline-block;
-	position: relative;
+    display: inline-block;
+    position: relative;
     font-family: "Century Gothic";
     font-size: .9em;
+    vertical-align: middle;
 }
 
 .monthpicker_selector *::selection {
-	background: transparent;
+    background: transparent;
 }
 
 .monthpicker_input {
-	display: inline-block;
-	width: 100%;
-	height: 100%;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
     background-color: #2C2C2C;
     position: absolute;
     top: 0;
@@ -27,7 +29,7 @@
 }
 
 .monthpicker_input.clear {
-	color: #888;
+    color: #888;
 }
 
 .monthpicker_input.active {
@@ -41,6 +43,7 @@
     background-color: #2C2C2C;
     min-width: 173px;
     box-shadow: 1px 2.5px 5px 0;
+    z-index: 100;
 }
 
 .monthpicker_selector>table {
@@ -48,19 +51,19 @@
     width: 100%;
     text-align: center;
     border-spacing : 0;
-	border-collapse : collapse;
+    border-collapse : collapse;
     font-family: "Century Gothic";
     font-size: .9em;
 }
 
 .monthpicker_selector>table tr:first-child td {
-	padding-top: 3px;
-	padding-bottom: 3px; 
+    padding-top: 3px;
+    padding-bottom: 3px; 
 }
 
 .monthpicker_selector>table tr:first-child>td:nth-child(1) {
-	padding-left: 5px;
-	padding-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     text-align: left;
 }
 
@@ -69,18 +72,22 @@
 }
 
 .monthpicker_selector>table tr:first-child>td:nth-child(3) {
-	padding-left: 5px;
-	padding-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     text-align: right;
 }
 
 .yearSwitch {
-	padding: 0 10px;
-	border-radius: 3px;
-	background: #D4D4D4;
-	color: #000;
-	font-weight: bold;
-	cursor: pointer;
+    padding: 0 10px;
+    border-radius: 3px;
+    background: #D4D4D4;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.yearSwitch.off {
+    visibility: hidden;
 }
 
 .yearValue {
@@ -106,6 +113,11 @@
 .monthpicker_selector .month:hover {
     background-color: #444
 }
+.month.selected {
+    background: #D4D4D4;
+    color: #2C2C2C;
+    font-weight: bold;
+}
 .monthpicker_selector .month.off {
     color: #666;
     cursor: not-allowed;
@@ -115,14 +127,13 @@
 }
 
 .monthpicker_selector>table tr td:first-child {
-	border-left: none;
+    border-left: none;
 }
 
 .monthpicker_selector>table tr td:last-child {
-	border-right: none;
+    border-right: none;
 }
 
 .monthpicker_selector>table tr:last-child td {
-	border-bottom: none;
+    border-bottom: none;
 }
-

@@ -367,7 +367,7 @@ var Monthpicker = (function () {
         minYear: null,
         maxValue: null,
         maxYear: null,
-        monthLabels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jui", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        monthLabels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         onSelect: null,
         onClose: null,
         allowNull: true
