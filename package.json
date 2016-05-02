@@ -1,0 +1,23 @@
+{
+  "name": "Simple-MonthPicker",
+  "version": "1.0.0",
+  "description": "A simple monthpicker plugin for jQuery",
+  "main": "monthpicker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VincentCharpentier/Simple-MonthPicker.git"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery"
+  ],
+  "author": "VincentCharpentier",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VincentCharpentier/Simple-MonthPicker/issues"
+  },
+  "homepage": "https://github.com/VincentCharpentier/Simple-MonthPicker"
+}
