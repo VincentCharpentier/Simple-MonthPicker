@@ -1,21 +1,16 @@
-/// <reference path="jquery.d.ts" />
 var Monthpicker = (function () {
     function Monthpicker(element, opts) {
-        // -- Year displayed
         this.currentYear = null;
-        // -- Selected Month & Year
         this.selectedYear = null;
         this.selectedMonth = null;
         this.id = Monthpicker.next_id++;
         Monthpicker.instances[this.id] = this;
         this.original_input = element;
-        // init DOM
         this.InitOptions(opts);
         this.InitValue();
         this.Init();
         this.RefreshInputs();
     }
-    // Static Methods
     Monthpicker.Get = function (element) {
         if (typeof (element.parentElement.dataset['mp']) === "undefined") {
             throw "Unable to retrieve the Monthpicker of element " + element;
@@ -26,7 +21,6 @@ var Monthpicker = (function () {
         var d = new Date();
         this.currentYear = d.getFullYear();
         var value_init_done = false;
-        // read field value
         if (this.original_input.value.match("[0-9]{1,2}/[0-9]{4}")) {
             var split = this.original_input.value.split('/');
             this.selectedMonth = parseInt(split[0]);
@@ -37,7 +31,6 @@ var Monthpicker = (function () {
         if (!this.opts.allowNull && !value_init_done) {
             this.selectedMonth = d.getMonth();
             this.selectedYear = d.getFullYear();
-            // check min bound consistency
             if (this.bounds.min.year !== null) {
                 if (this.selectedYear < this.bounds.min.year) {
                     this.selectedYear = this.bounds.min.year;
@@ -47,7 +40,6 @@ var Monthpicker = (function () {
                     this.selectedMonth = this.bounds.min.month;
                 }
             }
-            // check max bound consistency
             if (this.bounds.max.year !== null) {
                 if (this.selectedYear > this.bounds.max.year) {
                     this.selectedYear = this.bounds.max.year;
@@ -61,7 +53,6 @@ var Monthpicker = (function () {
         }
     };
     Monthpicker.prototype.InitOptions = function (opts) {
-        // merge options given with default options
         this.opts = Monthpicker._clone(Monthpicker.defaultOpts);
         this.MergeOptions(opts);
         this.EvaluateOptions();
@@ -89,9 +80,7 @@ var Monthpicker = (function () {
                 month: null
             }
         };
-        // MIN BOUND
         if (this.opts.minValue !== null || this.opts.minYear !== null) {
-            // MERGE Strategy : Strongest constraint
             if (this.opts.minValue !== null && this.opts.minYear !== null) {
                 var split = this.opts.minValue.split('/');
                 var minYear1 = parseInt(this.opts.minYear), minYear2 = parseInt(split[1]);
@@ -114,9 +103,7 @@ var Monthpicker = (function () {
                 bounds.min.month = 1;
             }
         }
-        // MAX BOUND
         if (this.opts.maxValue !== null || this.opts.maxYear !== null) {
-            // MERGE Strategy : Strongest constraint
             if (this.opts.maxValue !== null && this.opts.maxYear !== null) {
                 var split = this.opts.maxValue.split('/');
                 var maxYear1 = parseInt(this.opts.maxYear), maxYear2 = parseInt(split[1]);
@@ -143,12 +130,12 @@ var Monthpicker = (function () {
     };
     Monthpicker.prototype.RefreshInputs = function () {
         if (this.selectedYear && this.selectedMonth) {
-            // update inputs
             var month_num = this.selectedMonth < 10 ? "0" + this.selectedMonth : this.selectedMonth.toString();
             this.original_input.value = month_num + '/' + this.selectedYear;
             this.input.innerHTML = this.opts.monthLabels[this.selectedMonth - 1] + " " + this.selectedYear;
-        } else {
-          this.input.innerHTML = '<span class="placeholder">' + this.original_input.placeholder + '</span>';
+        }
+        else {
+            this.input.innerHTML = '<span class="placeholder">' + this.original_input.placeholder + '</span>';
         }
     };
     Monthpicker.prototype.RefreshUI = function () {
@@ -159,11 +146,9 @@ var Monthpicker = (function () {
         this.UpdateYearSwitches();
     };
     Monthpicker.prototype.InitIU = function () {
-        // wrap element in a custom div
         this.parent = document.createElement("div");
         this.parent.classList.add("monthpicker");
         this.parent.tabIndex = -1;
-        // TODO : Preserve margins of original input
         var style = getComputedStyle(this.original_input, null);
         this.parent.style.height = style.getPropertyValue("height");
         this.parent.style.width = style.getPropertyValue("width");
@@ -185,21 +170,16 @@ var Monthpicker = (function () {
         }
         this.original_input.parentElement.insertBefore(this.parent, this.original_input);
         this.parent.appendChild(this.original_input);
-        // hide original input
         this.original_input.style.display = "none";
-        // -- DOM PREPARATION
-        // new input
         this.input = document.createElement("div");
         this.input.classList.add("monthpicker_input");
         this.parent.appendChild(this.input);
-        // selector frame
         this.selector = document.createElement("div");
         this.selector.classList.add("monthpicker_selector");
         this.selector.style.display = "none";
         var selector_str = "<table><tr><td><span class='yearSwitch down'>&lt;</span></td><td><div class='yearValue'>"
             + this.currentYear
             + "</div> </td><td><span class='yearSwitch up'>&gt;</span> </td></tr> ";
-        // Months Area
         for (var j = 0; j < 4; j++) {
             var idx = j * 3;
             var labels_months = this.opts.monthLabels.slice(idx, idx + 3);
@@ -212,28 +192,22 @@ var Monthpicker = (function () {
         this.selector.innerHTML = selector_str;
         this.parent.appendChild(this.selector);
     };
-    // Methods
     Monthpicker.prototype.Init = function () {
         this.InitIU();
-        // Setup Refs
         this.year_input = this.selector.querySelector(".yearValue");
         this.parent.dataset["mp"] = this.id.toString();
-        // -- EVENTS PREPARATION
-        // Main input field
         this.parent.addEventListener("focusin", function () {
             Monthpicker.instances[this.dataset.mp].Show();
         }, true);
         this.parent.addEventListener("focusout", function () {
             Monthpicker.instances[this.dataset.mp].Hide();
         }, true);
-        // Year switches
         this.parent.querySelector(".yearSwitch.down").addEventListener("click", function () {
             Monthpicker.instances[this.closest(".monthpicker").dataset.mp].PrevYear();
         });
         this.parent.querySelector(".yearSwitch.up").addEventListener("click", function () {
             Monthpicker.instances[this.closest(".monthpicker").dataset.mp].NextYear();
         });
-        // Months
         var months = this.parent.querySelectorAll(".monthpicker_selector>table tr:not(:first-child) td.month");
         for (var i = 0; i < months.length; i++) {
             months[i].addEventListener("click", function () {
@@ -244,7 +218,6 @@ var Monthpicker = (function () {
         }
     };
     Monthpicker.prototype.SelectMonth = function (month) {
-        // check value
         var month_int = parseInt(month);
         if (isNaN(month_int)) {
             throw "Selected month is not a number : " + month;
@@ -252,22 +225,16 @@ var Monthpicker = (function () {
         if (month_int < 1 || month_int > 12) {
             throw "Month is out of range (should be in [1:12], was " + month + ")";
         }
-        // update attributes
         this.selectedMonth = month_int;
         this.selectedYear = this.currentYear;
-        // update view
         this.RefreshUI();
-        // update inputs
         this.RefreshInputs();
-        // release focus & close
         this.ReleaseFocus();
-        // call onSelect if defined
         if (this.opts.onSelect !== null) {
             this.opts.onSelect();
         }
     };
     Monthpicker.prototype.UpdateCalendarView = function () {
-        // Highlight selected month
         var months = this.selector.querySelectorAll(".month");
         for (var i = 0; i < months.length; i++) {
             months[i].classList.remove("selected");
@@ -275,7 +242,6 @@ var Monthpicker = (function () {
         if (this.selectedYear !== null && this.currentYear === this.selectedYear) {
             months[this.selectedMonth - 1].classList.add("selected");
         }
-        // Update available months
         for (var i = 0; i < months.length; i++) {
             months[i].classList.remove("off");
         }
@@ -304,9 +270,7 @@ var Monthpicker = (function () {
         this.selector.style.display = "none";
     };
     Monthpicker.prototype.ShowYear = function (year) {
-        // update attributes
         this.currentYear = year;
-        // update view
         this.RefreshUI();
     };
     Monthpicker.prototype.UpdateYearSwitches = function () {
@@ -330,19 +294,15 @@ var Monthpicker = (function () {
     Monthpicker.prototype.NextYear = function () {
         this.ShowYear(this.currentYear + 1);
     };
-    // utility : clone object
     Monthpicker._clone = function (obj) {
         var copy;
-        // Handle the 3 simple types, and null or undefined
         if (null == obj || "object" != typeof obj)
             return obj;
-        // Handle Date
         if (obj instanceof Date) {
             copy = new Date();
             copy.setTime(obj.getTime());
             return copy;
         }
-        // Handle Array
         if (obj instanceof Array) {
             copy = [];
             for (var i = 0, len = obj.length; i < len; i++) {
@@ -350,7 +310,6 @@ var Monthpicker = (function () {
             }
             return copy;
         }
-        // Handle Object
         if (obj instanceof Object) {
             copy = {};
             for (var attr in obj) {
@@ -361,7 +320,6 @@ var Monthpicker = (function () {
         }
         throw new Error("Unable to copy obj! Its type isn't supported.");
     };
-    // Static Attributes
     Monthpicker.next_id = 1;
     Monthpicker.instances = new Array();
     Monthpicker.defaultOpts = {
@@ -369,14 +327,13 @@ var Monthpicker = (function () {
         minYear: null,
         maxValue: null,
         maxYear: null,
-        monthLabels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        monthLabels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jui", "Aug", "Sep", "Oct", "Nov", "Dec"],
         onSelect: null,
         onClose: null,
         allowNull: true
     };
     return Monthpicker;
-})();
-// jQuery support
+}());
 if (jQuery) {
     jQuery.fn.Monthpicker = function (args, extraArgs) {
         var mode;
@@ -413,3 +370,4 @@ if (jQuery) {
         });
     };
 }
+//# sourceMappingURL=monthpicker.js.map

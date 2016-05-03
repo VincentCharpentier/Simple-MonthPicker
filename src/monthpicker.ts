@@ -1,10 +1,12 @@
 ﻿/// <reference path="jquery.d.ts" />
 
-interface EventFunction {
-    ():void
+interface EventFunction
+{
+    (): void
 }
 
-interface MonthpickerOptions {
+interface MonthpickerOptions
+{
     minValue?: string,
     minYear?: string,
     maxValue?: string,
@@ -15,13 +17,15 @@ interface MonthpickerOptions {
     onClose?: EventFunction
 }
 
-interface MonthpickerMap {
-    [index : number]: Monthpicker;
+interface MonthpickerMap
+{
+    [index: number]: Monthpicker;
 }
 
 
 
-interface MonthpickerBound {
+interface MonthpickerBound
+{
     min: {
         year: number;
         month: number;
@@ -32,7 +36,8 @@ interface MonthpickerBound {
     }
 }
 
-class Monthpicker {
+class Monthpicker
+{
     // Static Attributes
     static next_id: number = 1;
     static instances: MonthpickerMap = new Array();
@@ -48,7 +53,8 @@ class Monthpicker {
     }
 
     // Static Methods
-    static Get(element: HTMLInputElement): Monthpicker {
+    static Get(element: HTMLInputElement): Monthpicker
+    {
         if (typeof (element.parentElement.dataset['mp']) === "undefined") {
             throw "Unable to retrieve the Monthpicker of element " + element;
         }
@@ -73,11 +79,12 @@ class Monthpicker {
     year_input: HTMLDivElement;
 
 
-    constructor(element: HTMLInputElement, opts?: MonthpickerOptions) {
+    constructor(element: HTMLInputElement, opts?: MonthpickerOptions)
+    {
         this.id = Monthpicker.next_id++;
         Monthpicker.instances[this.id] = this;
         this.original_input = element;
-        
+
         // init DOM
         this.InitOptions(opts);
         this.InitValue();
@@ -85,7 +92,8 @@ class Monthpicker {
         this.RefreshInputs();
     }
 
-    InitValue() {
+    InitValue()
+    {
         var d = new Date();
         this.currentYear = d.getFullYear();
         var value_init_done = false;
@@ -97,7 +105,7 @@ class Monthpicker {
             this.currentYear = this.selectedYear;
             value_init_done = true;
         }
-        
+
         if (!this.opts.allowNull && !value_init_done) {
             this.selectedMonth = d.getMonth();
             this.selectedYear = d.getFullYear();
@@ -124,20 +132,23 @@ class Monthpicker {
         }
     }
 
-    InitOptions(opts: MonthpickerOptions) {
+    InitOptions(opts: MonthpickerOptions)
+    {
         // merge options given with default options
         this.opts = Monthpicker._clone(Monthpicker.defaultOpts);
         this.MergeOptions(opts);
         this.EvaluateOptions();
     }
 
-    UpdateOptions(opts: MonthpickerOptions) {
+    UpdateOptions(opts: MonthpickerOptions)
+    {
         this.MergeOptions(opts);
         this.EvaluateOptions();
         this.RefreshUI();
     }
 
-    MergeOptions(opts: MonthpickerOptions) {
+    MergeOptions(opts: MonthpickerOptions)
+    {
         if (opts) {
             for (var i in opts) {
                 this.opts[i] = opts[i];
@@ -145,7 +156,8 @@ class Monthpicker {
         }
     }
 
-    EvaluateOptions() {
+    EvaluateOptions()
+    {
         var bounds: MonthpickerBound = {
             min: {
                 year: null,
@@ -206,18 +218,20 @@ class Monthpicker {
         this.bounds = bounds;
     }
 
-    RefreshInputs() {
+    RefreshInputs()
+    {
         if (this.selectedYear && this.selectedMonth) {
             // update inputs
             var month_num: string = this.selectedMonth < 10 ? "0" + this.selectedMonth : this.selectedMonth.toString();
             this.original_input.value = month_num + '/' + this.selectedYear;
             this.input.innerHTML = this.opts.monthLabels[this.selectedMonth - 1] + " " + this.selectedYear;
         } else {
-          this.input.innerHTML = '<span class="placeholder">' + this.original_input.placeholder + '</span>';
+            this.input.innerHTML = '<span class="placeholder">' + this.original_input.placeholder + '</span>';
         }
     }
 
-    RefreshUI() {
+    RefreshUI()
+    {
         this.UpdateCalendarView();
         if (this.currentYear !== null) {
             this.year_input.innerHTML = this.currentYear.toString();
@@ -225,7 +239,8 @@ class Monthpicker {
         this.UpdateYearSwitches();
     }
 
-    InitIU() {
+    InitIU()
+    {
         // wrap element in a custom div
         this.parent = document.createElement("div");
         this.parent.classList.add("monthpicker");
@@ -248,7 +263,7 @@ class Monthpicker {
                 this.parent.style.width = this.original_input.offsetWidth + "px";
             }
         }
-        
+
         this.original_input.parentElement.insertBefore(this.parent, this.original_input);
         this.parent.appendChild(this.original_input);
         // hide original input
@@ -270,8 +285,8 @@ class Monthpicker {
             var idx = j * 3;
             var labels_months = this.opts.monthLabels.slice(idx, idx + 3);
             selector_str += "<tr><td class='month month" + (idx + 1) + "' data-m='" + (idx + 1) + "'>" + labels_months[0]
-            + "</td><td class='month month" + (idx + 2) + "' data-m='" + (idx + 2) + "'>" + labels_months[1]
-            + "</td><td class='month month" + (idx + 3) + "' data-m='" + (idx + 3) + "'>" + labels_months[2] + "</td></tr>";;
+                + "</td><td class='month month" + (idx + 2) + "' data-m='" + (idx + 2) + "'>" + labels_months[1]
+                + "</td><td class='month month" + (idx + 3) + "' data-m='" + (idx + 3) + "'>" + labels_months[2] + "</td></tr>";;
         }
         selector_str += "</table>";
         this.selector.innerHTML = selector_str;
@@ -279,7 +294,8 @@ class Monthpicker {
     }
 
     // Methods
-    Init() {
+    Init()
+    {
         this.InitIU();
 
         // Setup Refs
@@ -289,25 +305,30 @@ class Monthpicker {
         // -- EVENTS PREPARATION
 
         // Main input field
-        this.parent.addEventListener("focusin", function () {
+        this.parent.addEventListener("focusin", function()
+        {
             Monthpicker.instances[this.dataset.mp].Show();
-        },true);
-        this.parent.addEventListener("focusout", function () {
+        }, true);
+        this.parent.addEventListener("focusout", function()
+        {
             Monthpicker.instances[this.dataset.mp].Hide();
-        },true);
+        }, true);
 
         // Year switches
-        this.parent.querySelector(".yearSwitch.down").addEventListener("click", function () {
+        this.parent.querySelector(".yearSwitch.down").addEventListener("click", function()
+        {
             Monthpicker.instances[this.closest(".monthpicker").dataset.mp].PrevYear();
         });
-        this.parent.querySelector(".yearSwitch.up").addEventListener("click", function () {
+        this.parent.querySelector(".yearSwitch.up").addEventListener("click", function()
+        {
             Monthpicker.instances[this.closest(".monthpicker").dataset.mp].NextYear();
         });
-        
+
         // Months
         var months = this.parent.querySelectorAll(".monthpicker_selector>table tr:not(:first-child) td.month");
         for (var i = 0; i < months.length; i++) {
-            months[i].addEventListener("click", function () {
+            months[i].addEventListener("click", function()
+            {
                 if (!this.classList.contains("off")) {
                     Monthpicker.instances[this.closest(".monthpicker").dataset.mp].SelectMonth(this.dataset.m);
                 }
@@ -315,7 +336,8 @@ class Monthpicker {
         }
     }
 
-    SelectMonth(month: string) {
+    SelectMonth(month: string)
+    {
         // check value
         var month_int: number = parseInt(month);
         if (isNaN(month_int)) {
@@ -339,7 +361,8 @@ class Monthpicker {
         }
     }
 
-    UpdateCalendarView() {
+    UpdateCalendarView()
+    {
         // Highlight selected month
         var months = this.selector.querySelectorAll(".month");
         for (var i = 0; i < months.length; i++) {
@@ -364,30 +387,35 @@ class Monthpicker {
         }
     }
 
-    ReleaseFocus() {
+    ReleaseFocus()
+    {
         this.parent.blur();
     }
 
-    Show() {
+    Show()
+    {
         this.RefreshUI();
         this.selector.style.display = "block";
     }
 
-    Hide() {
+    Hide()
+    {
         if (this.selectedYear !== null) {
             this.currentYear = this.selectedYear;
         }
         this.selector.style.display = "none";
     }
-    
-    ShowYear(year: number) {
+
+    ShowYear(year: number)
+    {
         // update attributes
         this.currentYear = year;
         // update view
         this.RefreshUI();
     }
 
-    UpdateYearSwitches() {
+    UpdateYearSwitches()
+    {
         var prevSwitch = this.selector.querySelector(".yearSwitch.down"),
             nextSwitch = this.selector.querySelector(".yearSwitch.up");
         if (this.bounds.min.year !== null && this.currentYear <= this.bounds.min.year) {
@@ -401,19 +429,22 @@ class Monthpicker {
             nextSwitch.classList.remove("off");
         }
     }
-    
-    PrevYear() {
-        this.ShowYear(this.currentYear-1);
+
+    PrevYear()
+    {
+        this.ShowYear(this.currentYear - 1);
     }
 
-    NextYear() {
+    NextYear()
+    {
         this.ShowYear(this.currentYear + 1);
     }
 
 
     // utility : clone object
-    static _clone(obj) {
-        var copy;
+    static _clone(obj: any)
+    {
+        var copy: any;
         // Handle the 3 simple types, and null or undefined
         if (null == obj || "object" != typeof obj) return obj;
         // Handle Date
@@ -445,8 +476,9 @@ class Monthpicker {
 
 // jQuery support
 if (jQuery) {
-    jQuery.fn.Monthpicker = function (args, extraArgs) {
-        var mode;
+    jQuery.fn.Monthpicker = function(args: Object | string, extraArgs?: MonthpickerOptions)
+    {
+        var mode: string;
         if (typeof (args) === "undefined" || typeof (args) === "object") {
             mode = "ctor";
         } else if (typeof (args) === "string" && args === "option") {
@@ -455,7 +487,8 @@ if (jQuery) {
             console.error("Error : Monthpicker - bad argument (1)");
             return;
         }
-        $(this).each(function (i, item) {
+        $(this).each(function(i, item)
+        {
             switch (mode) {
                 case "ctor":
                     if (item.tagName == "INPUT" && (item.getAttribute("type") == "text" || item.getAttribute("type") === null)) {
