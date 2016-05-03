@@ -147,6 +147,8 @@ var Monthpicker = (function () {
             var month_num = this.selectedMonth < 10 ? "0" + this.selectedMonth : this.selectedMonth.toString();
             this.original_input.value = month_num + '/' + this.selectedYear;
             this.input.innerHTML = this.opts.monthLabels[this.selectedMonth - 1] + " " + this.selectedYear;
+        } else {
+          this.input.innerHTML = '<span class="placeholder">' + this.original_input.placeholder + '</span>';
         }
     };
     Monthpicker.prototype.RefreshUI = function () {
