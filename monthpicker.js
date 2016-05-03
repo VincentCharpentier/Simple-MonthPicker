@@ -150,16 +150,7 @@ var Monthpicker = (function () {
         this.parent.classList.add("monthpicker");
         this.parent.tabIndex = -1;
         var style = getComputedStyle(this.original_input, null);
-        this.parent.style.height = style.getPropertyValue("height");
         this.parent.style.width = style.getPropertyValue("width");
-        if (this.parent.style.height === "auto") {
-            if (this.original_input.offsetHeight === 0) {
-                this.parent.style.height = "20px";
-            }
-            else {
-                this.parent.style.height = this.original_input.offsetHeight + "px";
-            }
-        }
         if (this.parent.style.width === "auto") {
             if (this.original_input.offsetWidth === 0) {
                 this.parent.style.width = "100px";
@@ -173,6 +164,17 @@ var Monthpicker = (function () {
         this.original_input.style.display = "none";
         this.input = document.createElement("div");
         this.input.classList.add("monthpicker_input");
+        this.input.style.height = style.getPropertyValue("height");
+        if (this.input.style.height === "auto") {
+            if (this.original_input.offsetHeight === 0) {
+                this.input.style.height = "20px";
+            }
+            else {
+                this.input.style.height = this.original_input.offsetHeight + "px";
+            }
+        }
+        this.input.style.padding = style.getPropertyValue("padding");
+        this.input.style.border = style.getPropertyValue("border");
         this.parent.appendChild(this.input);
         this.selector = document.createElement("div");
         this.selector.classList.add("monthpicker_selector");
