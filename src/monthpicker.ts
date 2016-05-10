@@ -1,5 +1,6 @@
 ﻿/// <reference path="jquery.d.ts" />
 
+
 interface EventFunction
 {
     (): void
@@ -477,8 +478,8 @@ class Monthpicker
 
 
 // jQuery support
-if (jQuery) {
-    jQuery.fn.Monthpicker = function(args: Object | string, extraArgs?: MonthpickerOptions)
+if (window['jQuery']) {
+    window['jQuery'].fn.Monthpicker = function(args: Object | string, extraArgs?: MonthpickerOptions)
     {
         var mode: string;
         if (typeof (args) === "undefined" || typeof (args) === "object") {
@@ -489,7 +490,7 @@ if (jQuery) {
             console.error("Error : Monthpicker - bad argument (1)");
             return;
         }
-        $(this).each(function(i, item)
+        window['jQuery'](this).each(function(i: number, item: Element)
         {
             switch (mode) {
                 case "ctor":

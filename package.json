@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/VincentCharpentier/Simple-MonthPicker.git"
+    "url": "git+https://github.com/VincentCharpentier/Simple-MonthPicker.git"
   },
   "keywords": [
     "jquery-plugin",
@@ -19,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/VincentCharpentier/Simple-MonthPicker/issues"
   },
-  "homepage": "https://github.com/VincentCharpentier/Simple-MonthPicker"
+  "homepage": "https://github.com/VincentCharpentier/Simple-MonthPicker",
+  "devDependencies": {
+    "gulp": "latest",
+    "gulp-cli": "latest",
+    "gulp-typescript": "latest",
+    "google-closure-compiler": "latest"
+  }
 }

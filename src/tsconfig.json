@@ -1,5 +1,5 @@
 {
-  "compileOnSave": true,
+  "compileOnSave": false,
   "__":"FILES TO EXCLUDE FROM COMPILATION",
   "exclude":[],
   "compilerOptions": {
@@ -7,7 +7,7 @@
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
-        "outDir": "..",
+        "outDir": "../dist",
         "sourceMap": true
     },
     "atom": {
