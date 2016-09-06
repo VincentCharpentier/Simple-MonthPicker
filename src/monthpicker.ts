@@ -512,3 +512,26 @@ if (window['jQuery']) {
         });
     }
 }
+
+// matches polyfill
+window['Element'] && function(ElementPrototype: any) {
+    ElementPrototype.matches = ElementPrototype.matches ||
+    ElementPrototype.matchesSelector ||
+    ElementPrototype.webkitMatchesSelector ||
+    ElementPrototype.msMatchesSelector ||
+    function(selector: any) {
+        var node = this, nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
+        while (nodes[++i] && nodes[i] != node);
+        return !!nodes[i];
+    }
+}(window['Element'].prototype);
+
+// closest polyfill
+window['Element'] && function(ElementPrototype: any) {
+    ElementPrototype.closest = ElementPrototype.closest ||
+    function(selector: any) {
+        var el = this;
+        while (el.matches && !el.matches(selector)) el = el.parentNode;
+        return el.matches ? el : null;
+    }
+}(window['Element'].prototype);
