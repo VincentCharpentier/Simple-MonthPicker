@@ -3,6 +3,10 @@ A simple monthpicker plugin for jQuery
 
 TL;DR : [Live Demo](http://codepen.io/VincentCharpentier/full/WQrozB)
 
+## Setup
+
+Include `monthpicker.css` and `monthpicker.min.js` in your web page
+
 ## Basic usage
 
 1 - Initialization :
